@@ -42,8 +42,11 @@ exports.handler = async (event, context) => {
   const bookTitle = (await createBookTitle(subject)).title;
   let chapters = (await createChapters(bookTitle)).chapters;
 
-  console.log({
+
+  const book = {
     title: bookTitle,
     chapters,
-  });
+  };
+
+  console.log(JSON.stringify(book, null, 2));
 };
