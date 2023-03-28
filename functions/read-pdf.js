@@ -6,6 +6,8 @@ async function readPdfText(url) {
   const pdfBuffer = Buffer.from(response.data, 'binary');
   const pdfData = await pdfParse(pdfBuffer);
 
+    console.log(pdfData);
+
   return pdfData.text;
 }
 
@@ -17,6 +19,8 @@ async function fetchGptResponse(text) {
   };
   const apiUrl = 'https://api.openai.com/v1/chat/completions';
   const prompt = `Given the text:\n\n"${text}"\n\nFind the document type and reference number from the text using the following comma-separated document types: letter, email, memo. The reference number format should be three characters followed by a dash or slash and then a number greater than 0.`;
+
+  console.log(prompt);
 
   const data = {
     model: "gpt-3.5-turbo",
@@ -43,6 +47,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       body: JSON.stringify({ gptResponse }),
+      text
     };
   } catch (error) {
     console.error('Error:', error);
