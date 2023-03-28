@@ -1,5 +1,4 @@
 const axios = require('axios');
-const pdfParse = require('pdf-parse');
 const fetch = require('node-fetch');
 const pdfjsLib = require('pdfjs-dist/es5/build/pdf');
 const Tesseract = require('tesseract.js');
