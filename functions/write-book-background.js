@@ -29,7 +29,7 @@ const parseResponse = (value) => {
     return JSON.parse(value);
   } catch (e) {
     console.error("Couldn't Parse", value);
-    return '';
+    return value;
   }
 }
 
