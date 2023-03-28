@@ -1,13 +1,59 @@
 const axios = require("axios");
+const { Client } = require('notion-client');
+const MarkdownIt = require('markdown-it');
+const md = new MarkdownIt();
 
+const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const CHAT_GPT_MODEL = process.env.CHAT_GPT_MODEL ?? "gpt-3.5-turbo";
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+const databaseId = 'Books'; //https://www.notion.so/043cda58516340f3b354c9594222b1be?v=49df5d117fda40a68d6ea0fd946ef458&pvs=4
 
 const headers = {
   "Content-Type": "application/json",
   Authorization: `Bearer ${OPENAI_API_KEY}`,
 };
+
+async function createPage(bookTitle, markdown) {
+  const html = md.render(markdown);
+  const blocks = htmlToNotionBlocks(html);
+  const createdPage = await notion.pages.create({
+    parent: { database_id: databaseId },
+    properties: {
+      // Configure this to match your database properties
+      title: { title: [{ text: { content: bookTitle } }] },
+    },
+    children: blocks,
+  });
+
+  console.log(`Page created: ${createdPage.url}`);
+}
+
+function htmlToNotionBlocks(html) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const elements = doc.body.children;
+  const blocks = [];
+
+  for (const element of elements) {
+    switch (element.tagName) {
+      case 'P':
+        blocks.push({
+          object: 'block',
+          type: 'paragraph',
+          paragraph: {
+            text: [{ type: 'text', text: { content: element.textContent } }],
+          },
+        });
+        break;
+      // Add more cases for other elements like headings, lists, etc.
+      default:
+        console.warn(`Unhandled element: ${element.tagName}`);
+    }
+  }
+
+  return blocks;
+}
 
 const ask = async (question) => {
   const data = {
@@ -75,7 +121,7 @@ exports.handler = async (event, context) => {
     }
   }
 
-  console.log(totalBook.join("\n\n"));
+  await createPage(bookTitle, totalBook.join("\n\n"))
 } catch (e) {
   console.error(e);
 }
