@@ -38,7 +38,7 @@ const createChapters = async (bookTitle) => {
 exports.handler = async (event, context) => {
     const subject = event.queryStringParameters.subject;
 
-    const bookTitle = await createBookTitle(subject);
+    const bookTitle = (await createBookTitle(subject)).title;
     const chapters = await createChapters(bookTitle);
 
     return {
