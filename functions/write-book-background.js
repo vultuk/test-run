@@ -24,32 +24,26 @@ const ask = async (question) => {
   }
 };
 
-
 const createBookTitle = async (subject) => {
-    const question = `I want to write a book about ${subject}. Please generate me the title of the book as a single string in a json object.`;
-    
-    return JSON.parse(await ask(question))
-}
+  const question = `I want to write a book about ${subject}. Please generate me the title of the book as a single string in a json object.`;
+
+  return JSON.parse(await ask(question));
+};
 
 const createChapters = async (bookTitle) => {
-    const question = `Generate all the titles of the main chapters of a book titled "${bookTitle}". Output it just as a json array of strings with the key named "chapters". Please also generate an array of subchapters relating to each chapter.`;
-    
-    return JSON.parse(await ask(question))
-}
+  const question = `Generate all the titles of the main chapters of a book titled "${bookTitle}". Output it just as a json array of strings with the key named "chapters". Please also generate an array of subchapters relating to each chapter.`;
+
+  return JSON.parse(await ask(question));
+};
 
 exports.handler = async (event, context) => {
-    const subject = event.queryStringParameters.subject;
+  const subject = event.queryStringParameters.subject;
 
-    const bookTitle = (await createBookTitle(subject)).title;
-    let chapters = (await createChapters(bookTitle)).chapters;
+  const bookTitle = (await createBookTitle(subject)).title;
+  let chapters = (await createChapters(bookTitle)).chapters;
 
-
-    return {
-        statusCode: 200,
-        body: JSON.stringify({
-            title: bookTitle,
-            chapters
-        }),
-      };
-  };
-  
+  console.log({
+    title: bookTitle,
+    chapters,
+  });
+};
