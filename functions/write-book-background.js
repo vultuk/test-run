@@ -61,7 +61,7 @@ exports.handler = async (event, context) => {
     
     if (chapter.subchapters && chapter.subchapters.length > 0 ) {
       for (const subchapter of chapters.subchapters) {
-        console.log((await generateMainChapter(bookTitle, subchapter.title)));
+        console.log((await generateMainChapter(bookTitle, subchapter)));
       }
     }
   }
