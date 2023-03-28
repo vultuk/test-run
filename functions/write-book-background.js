@@ -48,7 +48,7 @@ const createChapters = async (bookTitle) => {
 const generateMainChapter = async (bookTitle, chapterTitle) => {
   const question = `Generate the content for a chapter of the book titled "${bookTitle}" where the chapter is titled "${chapterTitle}". Output this as plain text.`;
 
-  return parseResponse(await ask(question));
+  return await ask(question);
 };
 
 exports.handler = async (event, context) => {
