@@ -63,7 +63,7 @@ exports.handler = async (event, context) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify(gptResponse),
+      body: JSON.stringify(JSON.parse(gptResponse)),
       text
     };
   } catch (error) {
