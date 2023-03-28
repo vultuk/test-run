@@ -20,11 +20,7 @@ async function fetchGptResponse(text) {
 
   const data = {
     model: "gpt-3.5-turbo",
-    prompt,
-    max_tokens: 50,
-    n: 1,
-    stop: null,
-    temperature: 0.5,
+    message: prompt
   };
 
   const response = await axios.post(apiUrl, data, { headers });
