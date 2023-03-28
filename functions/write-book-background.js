@@ -60,7 +60,7 @@ exports.handler = async (event, context) => {
     }
     
     if (chapter.subchapters && chapter.subchapters.length > 0 ) {
-      for (const subchapter of chapters.subchapters) {
+      for (const subchapter of chapter.subchapters) {
         console.log((await generateMainChapter(bookTitle, subchapter)));
       }
     }
