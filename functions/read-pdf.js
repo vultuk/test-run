@@ -49,7 +49,7 @@ exports.handler = async (event, context) => {
 
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'An error occurred while processing the PDF file', data: error.response.data ?? error }),
+      body: JSON.stringify({ error: 'An error occurred while processing the PDF file', data: error?.response?.data ?? error }),
     };
   }
 };
