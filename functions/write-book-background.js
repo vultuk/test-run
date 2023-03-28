@@ -43,6 +43,7 @@ const generateMainChapter = async (bookTitle, chapterTitle) => {
 };
 
 exports.handler = async (event, context) => {
+  try {
   const subject = event.queryStringParameters.subject;
 
   const bookTitle = (await createBookTitle(subject)).title;
@@ -66,5 +67,13 @@ exports.handler = async (event, context) => {
       }
     }
   }
+} catch (e) {
+  console.error(e);
+}
+
+return {
+  statusCode: 200,
+  body: JSON.stringify({ status: "done" }),
+};
 
 };
