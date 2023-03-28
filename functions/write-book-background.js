@@ -124,28 +124,24 @@ exports.handler = async (event, context) => {
   const subject = event.queryStringParameters.subject;
 
   const bookTitle = (await createBookTitle(subject)).title;
-  // let chapters = (await createChapters(bookTitle)).chapters;
+  let chapters = (await createChapters(bookTitle)).chapters;
 
-  // totalBook.push(`# ${bookTitle}`);
+  totalBook.push(`# ${bookTitle}`);
 
-  // for (const chapter of chapters) {
-  //   totalBook.push(`# ${chapter.title}`);
+  for (const chapter of chapters) {
+    totalBook.push(`# ${chapter.title}`);
 
-  //   if (!chapter.subchapters  || chapter.subchapters.length === 0 ) {
-  //     totalBook.push((await generateMainChapter(bookTitle, chapter.title)));
-  //   }
+    if (!chapter.subchapters  || chapter.subchapters.length === 0 ) {
+      totalBook.push((await generateMainChapter(bookTitle, chapter.title)));
+    }
     
-  //   if (chapter.subchapters && chapter.subchapters.length > 0 ) {
-  //     for (const subchapter of chapter.subchapters) {
-  //       totalBook.push((await generateMainChapter(bookTitle, subchapter.title)));
-  //     }
-  //   }
-  // }
-    totalBook.push(`# Top
-    
-## Second
-    
-Welcome to the book`);
+    if (chapter.subchapters && chapter.subchapters.length > 0 ) {
+      for (const subchapter of chapter.subchapters) {
+        totalBook.push((await generateMainChapter(bookTitle, subchapter.title)));
+      }
+    }
+  }
+
   await createPage(bookTitle, totalBook.join(`
   
 `))
