@@ -9,7 +9,7 @@ const headers = {
   Authorization: `Bearer ${OPENAI_API_KEY}`,
 };
 
-export const ask = async (question) => {
+const ask = async (question) => {
   const data = {
     model: CHAT_GPT_MODEL,
     messages: [{ role: "user", content: question }],
@@ -24,4 +24,4 @@ export const ask = async (question) => {
   }
 };
 
-export default ask;
+export {ask};
