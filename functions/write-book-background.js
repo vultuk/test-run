@@ -53,29 +53,29 @@ const generateMainChapter = async (bookTitle, chapterTitle) => {
 
 exports.handler = async (event, context) => {
   try {
+    const totalBook = [];
   const subject = event.queryStringParameters.subject;
 
   const bookTitle = (await createBookTitle(subject)).title;
   let chapters = (await createChapters(bookTitle)).chapters;
 
-  console.log(JSON.stringify(chapters, null, 2));
-
-  console.log(bookTitle);
+  totalBook.push(`# ${bookTitle}`);
 
   for (const chapter of chapters) {
-    console.log(chapter.title);
+    totalBook.push(`# ${chapter.title}`);
 
     if (!chapter.subchapters  || chapter.subchapters.length === 0 ) {
-      console.log((await generateMainChapter(bookTitle, chapter.title)));
+      totalBook.push((await generateMainChapter(bookTitle, chapter.title)));
     }
     
     if (chapter.subchapters && chapter.subchapters.length > 0 ) {
       for (const subchapter of chapter.subchapters) {
-        console.log(subchapter.title);
-        console.log((await generateMainChapter(bookTitle, subchapter.title)));
+        totalBook.push((await generateMainChapter(bookTitle, subchapter.title)));
       }
     }
   }
+
+  console.log(totalBook.join("\n\n"));
 } catch (e) {
   console.error(e);
 }
