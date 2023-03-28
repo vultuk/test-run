@@ -1,4 +1,5 @@
 const axios = require('axios');
+const FormData = require('form-data');
 
 async function fetchGptResponse(text) {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -20,8 +21,41 @@ async function fetchGptResponse(text) {
   return response.data.choices[0].message.content.trim();
 }
 
+async function pdfToText(pdfUrl) {
+  const response = await axios.get(pdfUrl, { responseType: 'arraybuffer' });
+  const pdfBuffer = response.data;
+
+  const formData = new FormData();
+  formData.append('file', pdfBuffer, 'document.pdf');
+  formData.append('language', 'eng');
+  formData.append('apikey', process.env.OCR_API_KEY);
+
+  const ocrResponse = await axios.post('https://api.ocr.space/parse/image', formData, {
+    headers: formData.getHeaders(),
+  });
+
+  if (ocrResponse.data.IsErroredOnProcessing) {
+    throw new Error(ocrResponse.data.ErrorMessage.join(', '));
+  }
+
+  const parsedText = ocrResponse.data.ParsedResults.map((result) => result.ParsedText).join('');
+  return parsedText;
+}
+
+
 exports.handler = async (event, context) => {
+  const pdfUrl = event.queryStringParameters.url;
+
+  if (!pdfUrl) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Missing PDF URL in the request' }),
+    };
+  }
+
+
   try {
+    const text = await pdfToText(pdfUrl);
     const gptResponse = await fetchGptResponse(text);
 
     return {
