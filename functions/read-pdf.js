@@ -24,7 +24,7 @@ async function fetchGptResponse(text) {
   };
 
   const response = await axios.post(apiUrl, data, { headers });
-  return response.data.choices[0].text.trim();
+  return response.data.choices[0].message.content.trim();
 }
 
 exports.handler = async (event, context) => {
