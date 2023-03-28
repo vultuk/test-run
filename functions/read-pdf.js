@@ -15,11 +15,11 @@ async function fetchGptResponse(text) {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${apiKey}`,
   };
-  const apiUrl = 'https://api.openai.com/v1/engines/chat/completions';
+  const apiUrl = 'https://api.openai.com/v1/chat/completions';
   const prompt = `Given the text:\n\n"${text}"\n\nFind the document type and reference number from the text using the following comma-separated document types: letter, email, memo. The reference number format should be three characters followed by a dash or slash and then a number greater than 0.`;
 
   const data = {
-    
+    model: "gpt-3.5-turbo",
     prompt,
     max_tokens: 50,
     n: 1,
