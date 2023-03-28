@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { Client } = require('notion-client');
+const { Client } = require('@notionhq/client');
 const MarkdownIt = require('markdown-it');
 const md = new MarkdownIt();
 
