@@ -39,6 +39,7 @@ function htmlToNotionBlocks(html) {
   const blocks = [];
 
   for (const element of elements) {
+    if (blocks.length < 100) {
     switch (element.tagName) {
       case 'P':
         blocks.push({
@@ -68,9 +69,28 @@ function htmlToNotionBlocks(html) {
             },
           });
           break;
+          case 'OL':
+            blocks.push({
+              object: 'block',
+              type: 'list',
+              "list": {
+                "rich_text": [{ type: 'text', text: { content: element.textContent } }],
+              },
+            });
+            break;
+            case 'UL':
+              blocks.push({
+                object: 'block',
+                type: 'list',
+                "list": {
+                  "rich_text": [{ type: 'text', text: { content: element.textContent } }],
+                },
+              });
+              break;
       default:
         console.warn(`Unhandled element: ${element.tagName}`);
     }
+  }
   }
 
   return blocks;
