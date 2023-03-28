@@ -49,6 +49,7 @@ exports.handler = async (event, context) => {
     };
   } catch (error) {
     console.error('Error:', error);
+    console.log(error.data)
 
     return {
       statusCode: 500,
