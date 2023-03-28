@@ -141,8 +141,14 @@ exports.handler = async (event, context) => {
   //     }
   //   }
   // }
-    totalBook.push("# Top/n/n## Second/n/nWelcome to the book");
-  await createPage(bookTitle, totalBook.join("\n\n"))
+    totalBook.push(`# Top
+    
+## Second
+    
+Welcome to the book`);
+  await createPage(bookTitle, totalBook.join(`
+  
+`))
 } catch (e) {
   console.error(e);
 }
