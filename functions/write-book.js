@@ -32,13 +32,7 @@ const createBookTitle = async (subject) => {
 }
 
 const createChapters = async (bookTitle) => {
-    const question = `Generate all the titles of the main chapters of a book titled "${bookTitle}". Output it just as a json array of strings with the key named "chapters"`;
-    
-    return JSON.parse(await ask(question))
-}
-
-const createSubChapters = async (bookTitle, chapterTitle) => {
-    const question = `Generate all the titles of the subchapters of a book titled "${bookTitle}" where the current chapter is called ${chapterTitle}. Output it just as a json array of strings with the key named "subchapters"`;
+    const question = `Generate all the titles of the main chapters of a book titled "${bookTitle}". Output it just as a json array of strings with the key named "chapters". Please also generate an array of subchapters relating to each chapter.`;
     
     return JSON.parse(await ask(question))
 }
@@ -47,7 +41,7 @@ exports.handler = async (event, context) => {
     const subject = event.queryStringParameters.subject;
 
     const bookTitle = (await createBookTitle(subject)).title;
-    let chapters = (await createChapters(bookTitle));
+    let chapters = (await createChapters(bookTitle)).chapters;
 
 
     return {
