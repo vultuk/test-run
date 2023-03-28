@@ -1,14 +1,36 @@
 const axios = require('axios');
 const pdfParse = require('pdf-parse');
+const fetch = require('node-fetch');
+const pdfjsLib = require('pdfjs-dist/es5/build/pdf');
+const Tesseract = require('tesseract.js');
+const path = require('path');
 
-async function readPdfText(url) {
-  const response = await axios.get(url, { responseType: 'arraybuffer' });
-  const pdfBuffer = Buffer.from(response.data, 'binary');
-  const pdfData = await pdfParse(pdfBuffer);
+// Set the worker directory for pdfjs
+pdfjsLib.GlobalWorkerOptions.workerSrc = path.join(__dirname, './node_modules/pdfjs-dist/es5/build/pdf.worker.js');
 
-    console.log(pdfData);
 
-  return pdfData.text;
+async function readPdfText(pdfUrl) {
+  const response = await fetch(pdfUrl);
+  const data = new Uint8Array(await response.arrayBuffer());
+  const pdfDocument = await pdfjsLib.getDocument({ data }).promise;
+  const totalPages = pdfDocument.numPages;
+  let fullText = '';
+
+  for (let pageNumber = 1; pageNumber <= totalPages; pageNumber++) {
+    const page = await pdfDocument.getPage(pageNumber);
+    const viewport = page.getViewport({ scale: 1 });
+    const canvas = Tesseract.createCanvas(viewport.width, viewport.height);
+    const context = canvas.getContext('2d');
+    const renderContext = {
+      canvasContext: context,
+      viewport: viewport,
+    };
+    await page.render(renderContext).promise;
+    const result = await Tesseract.recognize(canvas);
+    fullText += result.data.text;
+  }
+
+  return fullText;
 }
 
 async function fetchGptResponse(text) {
