@@ -20,7 +20,7 @@ async function fetchGptResponse(text) {
 
   const data = {
     model: "gpt-3.5-turbo",
-    message: prompt
+    messages: [{"role": "user", "content": prompt}]
   };
 
   const response = await axios.post(apiUrl, data, { headers });
