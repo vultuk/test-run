@@ -10,7 +10,7 @@ async function readPdfText(url) {
 }
 
 async function fetchGptResponse(text) {
-  const apiKey = 'your_openai_api_key';
+  const apiKey = process.env.OPENAI_API_KEY;
   const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${apiKey}`,
