@@ -10,7 +10,7 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const CHAT_GPT_MODEL = process.env.CHAT_GPT_MODEL ?? "gpt-3.5-turbo";
 const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-const databaseId = 'Books'; //https://www.notion.so/043cda58516340f3b354c9594222b1be?v=49df5d117fda40a68d6ea0fd946ef458&pvs=4
+const databaseId = '043cda58516340f3b354c9594222b1be'; //https://www.notion.so/043cda58516340f3b354c9594222b1be?v=49df5d117fda40a68d6ea0fd946ef458&pvs=4
 
 const headers = {
   "Content-Type": "application/json",
