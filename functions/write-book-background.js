@@ -46,7 +46,7 @@ const createChapters = async (bookTitle) => {
 };
 
 const generateMainChapter = async (bookTitle, chapterTitle) => {
-  const question = `Generate the content for a chapter of the book titled "${bookTitle}" where the chapter is titled "${chapterTitle}". Output this as a single string in a json object where the key is "content".`;
+  const question = `Generate the content for a chapter of the book titled "${bookTitle}" where the chapter is titled "${chapterTitle}". Output this as plain text.`;
 
   return parseResponse(await ask(question));
 };
@@ -66,13 +66,13 @@ exports.handler = async (event, context) => {
     console.log(chapter.title);
 
     if (!chapter.subchapters  || chapter.subchapters.length === 0 ) {
-      console.log((await generateMainChapter(bookTitle, chapter.title)).content);
+      console.log((await generateMainChapter(bookTitle, chapter.title)));
     }
     
     if (chapter.subchapters && chapter.subchapters.length > 0 ) {
       for (const subchapter of chapter.subchapters) {
         console.log(subchapter.title);
-        console.log((await generateMainChapter(bookTitle, subchapter.title)).content);
+        console.log((await generateMainChapter(bookTitle, subchapter.title)));
       }
     }
   }
