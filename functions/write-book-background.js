@@ -52,7 +52,7 @@ exports.handler = async (event, context) => {
 
   for (const chapter of chapters) {
     console.log(chapter.title);
-    console.log((await generateMainChapter(bookTitle, chapter.title)).content);
+    console.log((await generateMainChapter(bookTitle, chapter.title)));
   }
 
 };
