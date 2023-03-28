@@ -50,6 +50,24 @@ function htmlToNotionBlocks(html) {
         });
         break;
       // Add more cases for other elements like headings, lists, etc.
+      case 'H1':
+        blocks.push({
+          object: 'block',
+          type: 'heading_1',
+          "heading_1": {
+            text: [{ type: 'text', text: { content: element.textContent } }],
+          },
+        });
+        break;
+        case 'H2':
+          blocks.push({
+            object: 'block',
+            type: 'heading_2',
+            "heading_2": {
+              text: [{ type: 'text', text: { content: element.textContent } }],
+            },
+          });
+          break;
       default:
         console.warn(`Unhandled element: ${element.tagName}`);
     }
@@ -123,7 +141,7 @@ exports.handler = async (event, context) => {
   //     }
   //   }
   // }
-    totalBook.push("# Top/n/nWelcome to the book");
+    totalBook.push("# Top/n/n## Second/n/nWelcome to the book");
   await createPage(bookTitle, totalBook.join("\n\n"))
 } catch (e) {
   console.error(e);
