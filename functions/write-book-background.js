@@ -24,22 +24,31 @@ const ask = async (question) => {
   }
 };
 
+const parseResponse = (value) => {
+  try {
+    return JSON.parse(value);
+  } catch (e) {
+    console.error("Couldn't Parse", value);
+    return '';
+  }
+}
+
 const createBookTitle = async (subject) => {
   const question = `I want to write a book about ${subject}. Please generate me the title of the book as a single string in a json object.`;
 
-  return JSON.parse(await ask(question));
+  return parseResponse(await ask(question));
 };
 
 const createChapters = async (bookTitle) => {
   const question = `Generate all the titles of the main chapters of a book titled "${bookTitle}". Output it just as a json array of objects with the key named "chapters". Please also add any subchapters relating to each chapter as an array of objects where the subchapter title is in a key named 'title'.`;
 
-  return JSON.parse(await ask(question));
+  return parseResponse(await ask(question));
 };
 
 const generateMainChapter = async (bookTitle, chapterTitle) => {
-  const question = `Generate the content for a chapter of the book titled "${bookTitle}" where the chapter is titled ${chapterTitle}. Output this as a single string in a json object where the key is "content".`;
+  const question = `Generate the content for a chapter of the book titled "${bookTitle}" where the chapter is titled "${chapterTitle}". Output this as a single string in a json object where the key is "content".`;
 
-  return JSON.parse(await ask(question));
+  return parseResponse(await ask(question));
 };
 
 exports.handler = async (event, context) => {
@@ -57,7 +66,7 @@ exports.handler = async (event, context) => {
     console.log(chapter.title);
 
     if (!chapter.subchapters  || chapter.subchapters.length === 0 ) {
-      console.log((await generateMainChapter(bookTitle, chapter.title)));
+      console.log((await generateMainChapter(bookTitle, chapter.title)).content);
     }
     
     if (chapter.subchapters && chapter.subchapters.length > 0 ) {
