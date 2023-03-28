@@ -46,6 +46,7 @@ function htmlToNotionBlocks(html) {
           type: 'paragraph',
           paragraph: {
             text: [{ type: 'text', text: { content: element.textContent } }],
+            "rich_text": [{ type: 'text', text: { content: element.textContent } }],
           },
         });
         break;
