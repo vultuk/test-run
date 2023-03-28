@@ -55,7 +55,7 @@ function htmlToNotionBlocks(html) {
           object: 'block',
           type: 'heading_1',
           "heading_1": {
-            text: [{ type: 'text', text: { content: element.textContent } }],
+            text: [{ type: 'rich_text', text: { content: element.textContent } }],
           },
         });
         break;
@@ -64,7 +64,7 @@ function htmlToNotionBlocks(html) {
             object: 'block',
             type: 'heading_2',
             "heading_2": {
-              text: [{ type: 'text', text: { content: element.textContent } }],
+              text: [{ type: 'rich_text', text: { content: element.textContent } }],
             },
           });
           break;
