@@ -31,7 +31,7 @@ const createBookTitle = async (subject) => {
 };
 
 const createChapters = async (bookTitle) => {
-  const question = `Generate all the titles of the main chapters of a book titled "${bookTitle}". Output it just as a json array of strings with the key named "chapters". Please also generate an array of subchapters relating to each chapter.`;
+  const question = `Generate all the titles of the main chapters of a book titled "${bookTitle}". Output it just as a json array of objects with the key named "chapters". Please also add any subchapters relating to each chapter.`;
 
   return JSON.parse(await ask(question));
 };
